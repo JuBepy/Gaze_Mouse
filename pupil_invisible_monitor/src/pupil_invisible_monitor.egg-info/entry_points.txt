@@ -1,0 +1,3 @@
+[console_scripts]
+pupil_invisible_monitor = pupil_invisible_monitor.__main__:main
+

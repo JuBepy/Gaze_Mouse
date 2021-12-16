@@ -1,0 +1,9 @@
+numpy
+glfw>=1.8.4
+PyOpenGL
+pyglui
+ndsi
+
+[deploy]
+pyinstaller
+packaging
