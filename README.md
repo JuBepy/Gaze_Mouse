@@ -5,9 +5,9 @@ This project aims to get mouse control using the coordinates given by eye-tracki
 This project was produced by : 
  - Julien Bertieaux (Julien.BERTIEAUX@student.umons.ac.be)
  - Cyrille Finet (Cyrille.FINET@student.umons.ac.be)
- - Charles Moulin (Charles.Moulin@student.umons.ac.be)
+ - Charles Moulin (Charles.MOULIN@student.umons.ac.be)
  - Robin Vandebrouck (Robin.VANDEBROUCK@student.umons.ac.be)
- - Benoît VIDOTTO (Benoit.VIDOTTO@student.umons.ac.be)
+ - Benoît Vidotto (Benoit.VIDOTTO@student.umons.ac.be)
 
 This project was realised at the University of Umons (https://web.umons.ac.be/en/) at the Faculty of engineering (https://web.umons.ac.be/fpms/en/) in the ISIA departement (https://web.umons.ac.be/numediart/en/about/)
 
@@ -18,3 +18,5 @@ The objective is to transform data given by the glasses and use it to control a 
 <p align="center">
   <img src="assets/conversion.png"/>
 </p>
+
+In order to convert, we used the ARuco [repository](https://github.com/KhairulIzwan/ArUco-markers-with-OpenCV-and-Python) to recognize markers. The markers are placed on the computer screen. This allows us to scale the gaze coordinates.
