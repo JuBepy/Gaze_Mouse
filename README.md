@@ -13,4 +13,8 @@ This project was realised at the University of Umons (https://web.umons.ac.be/en
 
 ## Implementation summary 
 
-The objective is to transform data given by the glasses and use it to control a mouse. This goal is achieved through several steps. First, we started using the [repository](https://github.com/pupil-labs/pupil-invisible-monitor) given by Pupil Labs. The pipeline allowed us to extract the gaze coordinates and the video stream. 
+The objective is to transform data given by the glasses and use it to control a mouse. This goal is achieved through several steps. First, we started using the [repository](https://github.com/pupil-labs/pupil-invisible-monitor) given by Pupil Labs. The pipeline allowed us to extract the gaze coordinates and the video stream. Unfortunately, the coordinates are not directly usable. Indeed, we need to convert the coordinates from the glasses to the computer point of view. The glasses give coordinates within 1088x1080 matrix. We need to adapt the gaze coordinates to a standard 1920x1080 screen. The conversion is illustrated on the following figure :
+
+<p align="center">
+  <img src="assets/conversion.png"/>
+</p>
