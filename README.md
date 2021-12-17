@@ -19,4 +19,6 @@ The objective is to transform data given by the glasses and use it to control a 
   <img src="assets/conversion.png"/>
 </p>
 
-In order to convert, we used the ARuco [repository](https://github.com/KhairulIzwan/ArUco-markers-with-OpenCV-and-Python) to recognize markers. The markers are placed on the computer screen. This allows us to scale the gaze coordinates.
+In order to convert, we used the ARuco [repository](https://github.com/KhairulIzwan/ArUco-markers-with-OpenCV-and-Python) to recognize markers. The markers are placed on the computer screen. Those markers allow us to scale the gaze coordinates.
+
+Then, used the Vosk speech recognition algorithm to execute voice commands such as : left-click, right-click or scroll.
