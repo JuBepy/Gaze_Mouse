@@ -1,4 +1,5 @@
-# Gaze_Mouse
+# Gaze Mouse
+## Introduction
 This project aims to get mouse control using the coordinates given by eye-tracking glasses. We used the "Invisible" glasses created by Pupil Labs. This GitHub is the result of the project of the "Virtual Processing and Smart Spaces" course, in 2021.
 
 This project was produced by : 
@@ -10,7 +11,6 @@ This project was produced by :
 
 This project was realised at the University of Umons (https://web.umons.ac.be/en/) at the Faculty of engineering (https://web.umons.ac.be/fpms/en/) in the ISIA departement (https://web.umons.ac.be/numediart/en/about/)
 
-The project is seprated into differents parts :
- - bla 
- - bla
- - bla
+## Implementation summary 
+
+The objective is to transform data given by the glasses and use it to control a mouse. This goal is achieved through several steps. First, we started using the [repository](https://github.com/pupil-labs/pupil-invisible-monitor) given by Pupil Labs. The pipeline allowed us to extract the gaze coordinates and the video stream. 
