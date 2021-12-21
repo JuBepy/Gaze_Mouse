@@ -1,6 +1,6 @@
 # Gaze Mouse
 ## Introduction
-This project aims to get mouse control using the coordinates given by eye-tracking glasses. We used the "Invisible" glasses created by Pupil Labs. This GitHub is the result of the project of the "Virtual Processing and Smart Spaces" course, in 2021.
+This project aims to get mouse control using the coordinates given by eye-tracking glasses. We used the "Invisible" glasses created by Pupil Labs. This GitHub is the result of the project of the "Visual Processing and Smart Spaces" course, in 2021.
 
 This project was produced by : 
  - Julien Bertieaux (Julien.BERTIEAUX@student.umons.ac.be)
