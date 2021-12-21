@@ -367,7 +367,7 @@ class Host_Controller(Observable):
 
                                 #pour cliquer avec le clin d'oeil, il faut voir si ça existe dans les sensors : ceux-ci sont cités à la fin dans https://github.com/pupil-labs/pyndsi/blob/master/src/ndsi/sensor.py
                                 # ça n'a pas l'air possible donc il faudrait sûrement le faire avec le gaze qui n'existerait pas avec un oeil fermé ? donc on ajouterait un else à if gaze
-                            else 
+                            else: 
                                 logger.warning("Non, Le gaze n'est pas compris dans le rectangle formé par les 4 markers")
 
                             # ___________________ fin du code de détection des markers et clic _______________
