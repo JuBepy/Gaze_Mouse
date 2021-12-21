@@ -1,11 +1,95 @@
 import logging
 import typing as T
-
 import ndsi
+
+
+
 
 from .observable import Observable
 
 logger = logging.getLogger(__name__)
+
+
+# _____ librairies additionnelles
+
+
+from matplotlib import pyplot as plt
+from PIL import Image
+import cv2
+import imutils
+from shapely.geometry import Point
+from shapely.geometry.polygon import Polygon
+
+
+# __________ code d'initiation pour la détection de markers ______________________
+
+
+
+
+# import the necessary packages
+import argparse
+import imutils
+import cv2
+import sys
+
+# construct the argument parser and parse the arguments
+ap = argparse.ArgumentParser()
+# ap.add_argument("-i", "--image", required=True,
+#     help="path to input image containing ArUCo tag")
+ap.add_argument("-t", "--type", type=str,
+    default="DICT_ARUCO_ORIGINAL",
+    help="type of ArUCo tag to detect")
+args = vars(ap.parse_args())
+
+# define names of each possible ArUco tag OpenCV supports
+ARUCO_DICT = {
+    "DICT_4X4_50": cv2.aruco.DICT_4X4_50,
+    "DICT_4X4_100": cv2.aruco.DICT_4X4_100,
+    "DICT_4X4_250": cv2.aruco.DICT_4X4_250,
+    "DICT_4X4_1000": cv2.aruco.DICT_4X4_1000,
+    "DICT_5X5_50": cv2.aruco.DICT_5X5_50,
+    "DICT_5X5_100": cv2.aruco.DICT_5X5_100,
+    "DICT_5X5_250": cv2.aruco.DICT_5X5_250,
+    "DICT_5X5_1000": cv2.aruco.DICT_5X5_1000,
+    "DICT_6X6_50": cv2.aruco.DICT_6X6_50,
+    "DICT_6X6_100": cv2.aruco.DICT_6X6_100,
+    "DICT_6X6_250": cv2.aruco.DICT_6X6_250,
+    "DICT_6X6_1000": cv2.aruco.DICT_6X6_1000,
+    "DICT_7X7_50": cv2.aruco.DICT_7X7_50,
+    "DICT_7X7_100": cv2.aruco.DICT_7X7_100,
+    "DICT_7X7_250": cv2.aruco.DICT_7X7_250,
+    "DICT_7X7_1000": cv2.aruco.DICT_7X7_1000,
+    "DICT_ARUCO_ORIGINAL": cv2.aruco.DICT_ARUCO_ORIGINAL,
+#   "DICT_APRILTAG_16h5": cv2.aruco.DICT_APRILTAG_16h5,
+#   "DICT_APRILTAG_25h9": cv2.aruco.DICT_APRILTAG_25h9,
+#   "DICT_APRILTAG_36h10": cv2.aruco.DICT_APRILTAG_36h10,
+#   "DICT_APRILTAG_36h11": cv2.aruco.DICT_APRILTAG_36h11
+}
+
+# load the input image from disk and resize it
+# print("[INFO] loading image...")
+# image = cv2.imread(args["image"])
+# image = imutils.resize(image, width=600)
+
+# verify that the supplied ArUCo tag exists and is supported by
+# OpenCV
+if ARUCO_DICT.get(args["type"], None) is None:
+    print("[INFO] ArUCo tag of '{}' is not supported".format(
+        args["type"]))
+    sys.exit(0)
+
+# load the ArUCo dictionary, grab the ArUCo parameters, and detect
+# the markers
+print("[INFO] detecting '{}' tags...".format(args["type"]))
+arucoDict = cv2.aruco.Dictionary_get(ARUCO_DICT[args["type"]])
+arucoParams = cv2.aruco.DetectorParameters_create()
+
+
+
+
+#_________________ fin du code de détection de markers _________________________
+
+
 
 
 class SortedHostDict(dict):
@@ -201,9 +285,92 @@ class Host_Controller(Observable):
                     if frame is not None:
                         self.on_recent_frame(frame)
 
+                        image = frame.bgr
+
+                        # logger.warning(
+                        #     f"Type test {type(test)} "
+                        # )
+
+                        # image = plt.imshow(img, interpolation='nearest')
+                        # plt.show()
+                        # plt.draw()
+                        
+                        
+
+                        # image = Image.fromarray(img, 'RGB')
+                        # logger.warning(type(image))
+                        # # img.save('my.png')
+                        # image.show()
+                        # aruco(img)
+                        image = imutils.resize(image, width=1000)
+
                     gaze = host.fetch_recent_gaze()
                     if gaze:
                         self.on_recent_gaze(gaze)
+                        # print(f"Coordonnees absolues : {gaze}")    # Modif VDB
+                    # else: #est ce qu'on peut considérer que si on a pas de gaze, on clique ?
+
+
+                    # ____________ détection des markers et clic __________________
+
+                    markerrrrss = {24 : 0, 42 : 0, 66 : 0, 70 : 0}
+                    if gaze and frame:
+                        (corners, ids, rejected) = cv2.aruco.detectMarkers(image, arucoDict,
+                                                parameters=arucoParams)
+                        if len(corners) > 3:        # si il y a plus de 3 markers, alors on peut faire le clic
+                            # flatten the ArUco IDs list
+                            ids = ids.flatten()
+
+                            # loop over the detected ArUCo corners
+                            for (markerCorner, markerID) in zip(corners, ids):
+                                # extract the marker corners (which are always returned in
+                                # top-left, top-right, bottom-right, and bottom-left order)
+                                corners = markerCorner.reshape((4, 2))
+                                (topLeft, topRight, bottomRight, bottomLeft) = corners
+
+                                # convert each of the (x, y)-coordinate pairs to integers
+                                # topRight = (int(topRight[0]), int(topRight[1]))
+                                # bottomRight = (int(bottomRight[0]), int(bottomRight[1]))
+                                # bottomLeft = (int(bottomLeft[0]), int(bottomLeft[1]))
+                                # topLeft = (int(topLeft[0]), int(topLeft[1]))
+
+                                # print("[INFO] ArUco marker ID: {}".format(markerID))
+                                # logger.warning(
+                                #     f"[INFO] ArUco marker ID: {markerID} "
+                                # )
+
+                                # le rectange est composé des markers aux ID 42 en haut à droite, 24 en haut à gauche, ...
+                                if markerID == 42:
+                                    markerrrrss[markerID] = (int(topLeft[0]), int(topLeft[1]))
+                                elif markerID == 24:
+                                    markerrrrss[markerID] = (int(topRight[0]), int(topRight[1]))
+                                elif markerID == 66:
+                                    markerrrrss[markerID] = (int(bottomLeft[0]), int(bottomLeft[1]))
+                                elif markerID == 70:
+                                    markerrrrss[markerID] = (int(bottomRight[0]), int(bottomRight[1]))
+
+
+
+                            # logger.warning(markerrrrss.keys())
+                            # la création du polygone se fait en détectant les points dans le sens trigonométrique
+                            # ici, on détecte sur l'utilisateur regarde dans le rectangle créé par les markers.
+                            # la fonction polygon.contains permet d'inclure les transformations dûes à l'orientation des lunettes par rapports aux markers en 1 fonction
+                            if Polygon([(markerrrrss[24][0], markerrrrss[24][1]), (markerrrrss[42][0], markerrrrss[42][1]), (markerrrrss[66][0], markerrrrss[66][1]), (markerrrrss[70][0], markerrrrss[70][1])]).contains(Point(gaze[0], gaze[1])):
+                                logger.warning("Le gaze est compris dans le rectangle formé par les 4 markers")
+                                width = markerrrrss[24][0] - markerrrrss[42][0]
+                                height = markerrrrss[66][1] - markerrrrss[42][1]
+                                relative_position_x = (gaze[0] - markerrrrss[42][0])/width
+                                relative_position_y = (gaze[1] - markerrrrss[42][1])/height
+                                screen_width = 1920
+                                screen_height = 1080
+                                mouse.move(relative_position_x * screen_width, relative_position_y * screen_height, absolute=True, duration=0)
+
+                                #pour cliquer avec le clin d'oeil, il faut voir si ça existe dans les sensors : ceux-ci sont cités à la fin dans https://github.com/pupil-labs/pyndsi/blob/master/src/ndsi/sensor.py
+                                # ça n'a pas l'air possible donc il faudrait sûrement le faire avec le gaze qui n'existerait pas avec un oeil fermé ? donc on ajouterait un else à if gaze
+                            else 
+                                logger.warning("Non, Le gaze n'est pas compris dans le rectangle formé par les 4 markers")
+
+                            # ___________________ fin du code de détection des markers et clic _______________
                 except ndsi.sensor.NotDataSubSupportedError:
                     logger.warning(
                         f"Host {host} is in bad state. "
