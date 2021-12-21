@@ -19,6 +19,7 @@ import cv2
 import imutils
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
+import mouse
 
 
 # __________ code d'initiation pour la détection de markers ______________________
@@ -317,6 +318,9 @@ class Host_Controller(Observable):
                     if gaze and frame:
                         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, arucoDict,
                                                 parameters=arucoParams)
+                        
+                        # logger.warning(f"detect {len(corners)} markers")
+
                         if len(corners) > 3:        # si il y a plus de 3 markers, alors on peut faire le clic
                             # flatten the ArUco IDs list
                             ids = ids.flatten()
@@ -356,7 +360,7 @@ class Host_Controller(Observable):
                             # ici, on détecte sur l'utilisateur regarde dans le rectangle créé par les markers.
                             # la fonction polygon.contains permet d'inclure les transformations dûes à l'orientation des lunettes par rapports aux markers en 1 fonction
                             if Polygon([(markerrrrss[24][0], markerrrrss[24][1]), (markerrrrss[42][0], markerrrrss[42][1]), (markerrrrss[66][0], markerrrrss[66][1]), (markerrrrss[70][0], markerrrrss[70][1])]).contains(Point(gaze[0], gaze[1])):
-                                logger.warning("Le gaze est compris dans le rectangle formé par les 4 markers")
+                                logger.warning("Oui, le gaze est compris dans le rectangle formé par les 4 markers")
                                 width = markerrrrss[24][0] - markerrrrss[42][0]
                                 height = markerrrrss[66][1] - markerrrrss[42][1]
                                 relative_position_x = (gaze[0] - markerrrrss[42][0])/width
@@ -367,7 +371,7 @@ class Host_Controller(Observable):
 
                                 #pour cliquer avec le clin d'oeil, il faut voir si ça existe dans les sensors : ceux-ci sont cités à la fin dans https://github.com/pupil-labs/pyndsi/blob/master/src/ndsi/sensor.py
                                 # ça n'a pas l'air possible donc il faudrait sûrement le faire avec le gaze qui n'existerait pas avec un oeil fermé ? donc on ajouterait un else à if gaze
-                            else: 
+                            else:
                                 logger.warning("Non, Le gaze n'est pas compris dans le rectangle formé par les 4 markers")
 
                             # ___________________ fin du code de détection des markers et clic _______________
