@@ -314,7 +314,13 @@ class Host_Controller(Observable):
 
 
                     # ____________ détection des markers et clic __________________
-
+                    # le rectangle délimitant l'écran a été créé comme suit avec les markers 24, 42, 66 et 70 disponibles dans le github grâce à ArUco : 
+                    #  __________________________
+                    # |ID42                  ID24|
+                    # |                          |
+                    # |ID66__________________ID70|
+                    
+                    
                     markerrrrss = {24 : 0, 42 : 0, 66 : 0, 70 : 0}
                     if gaze and frame:
                         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, arucoDict,
