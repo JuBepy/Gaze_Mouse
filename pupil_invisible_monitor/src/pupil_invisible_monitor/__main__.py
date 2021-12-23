@@ -27,11 +27,10 @@ from .ui import HostViewController
 from .window import Window
 
 
-
-def audio_recognition (buffer_mouse_click, buffer_mouse_option, args, q_vosk, model, dump_fn):
+### Function that runs in parallel with the video processing
+def audio_recognition (args, q_vosk, model, dump_fn):
         
    
-    
     with sd.RawInputStream(samplerate=args.samplerate, blocksize = 8000, device=args.device, dtype='int16',
                         channels=1, callback=callback):
       
@@ -42,16 +41,15 @@ def audio_recognition (buffer_mouse_click, buffer_mouse_option, args, q_vosk, mo
             if rec.AcceptWaveform(data):
                 
                 dictResult = json.loads(rec.Result())
-                 
+                
+                # Keywords for the mouse actions
                 if "sélection" in dictResult.get("text"):
                       print("[LEFT CLICK]")
                       mouse.click("left")
-                    # buffer_mouse_click.put("sélection")
-                
+                 
                 if "option" in dictResult.get("text"):        
                     print("[RIGHT CLICK]")
                     mouse.click("right")
-                    # buffer_mouse_option.put("option")
                     
                 if "montée" in dictResult.get("text"):
                     print("[UP]")
@@ -130,32 +128,15 @@ if __name__ == "__main__":
         dump_fn = open(args.filename, "wb")
     else:
         dump_fn = None
-    
-    def click_function (buffer_mouse_click, buffer_mouse_option):
         
-        if buffer_mouse_click.empty() == False:
-            buffer_mouse_click.get()
-            print("[LEFT CLICK]")
-            mouse.click("left")
-        
-        if buffer_mouse_option.empty() == False:
-            buffer_mouse_option.get()
-            print("[RIGHT CLICK]")
-            mouse.click("right")
-        
-    
      
     ### Threading ###
-    
-    buffer_mouse_click = Queue() # buffer click gauche souris
-    buffer_mouse_option = Queue() # buffer click droit souris
-    
-    thr = threading.Thread(target = audio_recognition, args = (buffer_mouse_click, buffer_mouse_option,args, q_vosk, model, dump_fn,) )
+        
+    thr = threading.Thread(target = audio_recognition, args = (args, q_vosk, model, dump_fn,) )
     thr.start()
     
     
-    # main(buffer_mouse_click, buffer_mouse_option)
-        
+       
     log_path = Path.home() / "pi_monitor_settings" / "pi_monitor.log"
     log_path.parent.mkdir(exist_ok=True)
     handlers = [
@@ -182,21 +163,6 @@ if __name__ == "__main__":
 
         gaze_overlay = GazeOverlay()
         
-        
-        # Ajouts Cyrille
-        # coordinates = np.array (gaze_overlay._recent_gaze())
-        # mouse.move(coordinates[0], coordinates[1], absolute=True, duration=0)
-        
-        # if buffer_mouse_click.empty() == False:
-        #     buffer_mouse_click.get()
-        #     print("[LEFT CLICK]")
-        #     mouse.click("left")
-        
-        # if buffer_mouse_option.empty() == False:
-        #     print("NOICE")
-        #     buffer_mouse_option.get()
-        #     print("[RIGHT CLICK]")
-        #     mouse.click("right")
             
         host_controller.add_observer("on_recent_gaze", gaze_overlay.update)
         
