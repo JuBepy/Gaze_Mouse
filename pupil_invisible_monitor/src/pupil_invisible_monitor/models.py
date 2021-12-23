@@ -20,6 +20,7 @@ import imutils
 from shapely.geometry import Point
 from shapely.geometry.polygon import Polygon
 import mouse
+import os
 
 
 # __________ code d'initiation pour la détection de markers ______________________
@@ -319,7 +320,8 @@ class Host_Controller(Observable):
                         (corners, ids, rejected) = cv2.aruco.detectMarkers(image, arucoDict,
                                                 parameters=arucoParams)
                         
-                        # logger.warning(f"detect {len(corners)} markers")
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        logger.warning(f"detect {len(corners)} markers {ids}")                        
 
                         if len(corners) > 3:        # si il y a plus de 3 markers, alors on peut faire le clic
                             # flatten the ArUco IDs list
