@@ -28,7 +28,7 @@ Then, used the Vosk speech recognition algorithm to execute voice commands such 
 <p align="center">
   <video src="assets/video-1640266393.mp4"/>
 </p>
-Source: https://prograide.com/pregunta/15530/comment-integrer-une-video-dans-le-fichier-readmemd-de-github
+[![Watch the video](https://i.imgur.com/vKb2F1B.png)](assets/video-1640266393.mp4)
 ## Requirements
 - Python 3.6
 - Libraries to install (pip install) : vosk, sounddevice, mouse, opencv-contrib-python, Shapely
