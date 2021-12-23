@@ -23,12 +23,6 @@ In order to convert, we used the ARuco [repository](https://github.com/KhairulIz
 
 Then, used the Vosk speech recognition algorithm to execute voice commands such as : left-click, right-click or scroll.
 
-## Demonstration
-
-<p align="center">
-  <video src="assets/video-1640266393.mp4"/>
-</p>
-[![Watch the video](https://i.imgur.com/vKb2F1B.png)](assets/video-1640266393.mp4)
 ## Requirements
 - Python 3.6
 - Libraries to install (pip install) : vosk, sounddevice, mouse, opencv-contrib-python, Shapely
